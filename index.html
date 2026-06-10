@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>파이썬 코드 도감 · 낙원중 영재학급</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+<style>
+  :root{
+    --bg:#eef3fa;--grid:#dbe5f1;--surface:#ffffff;--ink:#16202c;--ink-soft:#4a5a6b;--line:#dde6f0;
+    --py-blue:#306998;--py-yellow:#ffd43b;--code-bg:#16202c;--code-ink:#e6edf3;--code-cmt:#7d99b4;--code-str:#7ee0b8;
+    --blank-bg:#ffd43b;--blank-ink:#3a2c00;--ok:#36c46b;
+    --l1:#1aa39a;--l2:#2f79c9;--l3:#7c5cff;--l4:#f0883e;--l5:#e0508a;--l6:#2f9e44;
+    --radius:16px;--mono:'JetBrains Mono','D2Coding',ui-monospace,Consolas,monospace;
+    --sans:'Pretendard',-apple-system,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;font-family:var(--sans);color:var(--ink);background-color:var(--bg);
+    background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+    background-size:28px 28px;line-height:1.55;-webkit-font-smoothing:antialiased;}
+
+  header.site{background:linear-gradient(135deg,#234e74 0%,#306998 55%,#3f7fb0 100%);color:#fff;padding:34px 22px 30px;border-bottom:5px solid var(--py-yellow);}
+  .head-inner{max-width:1080px;margin:0 auto;}
+  .eyebrow{font-family:var(--mono);font-size:.78rem;letter-spacing:.18em;text-transform:uppercase;color:var(--py-yellow);font-weight:700;margin:0 0 8px;}
+  header.site h1{margin:0;font-size:clamp(1.8rem,4.5vw,2.8rem);font-weight:800;letter-spacing:-.02em;display:flex;align-items:center;gap:.4em;flex-wrap:wrap;}
+  header.site p.sub{margin:10px 0 0;color:#d8e6f4;font-size:1rem;max-width:60ch;}
+  .meta{margin-top:16px;display:flex;gap:18px;flex-wrap:wrap;font-size:.85rem;color:#c6d8ea;font-family:var(--mono);}
+  .meta b{color:#fff;font-weight:600;}
+
+  .howto{max-width:1080px;margin:24px auto 0;padding:0 22px;}
+  .howto-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px;display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap;box-shadow:0 1px 0 rgba(22,32,44,.04);}
+  .howto-card .big{font-size:1.6rem;line-height:1;}
+  .howto-card .txt{flex:1;min-width:240px;}
+  .howto-card h2{margin:0 0 4px;font-size:1rem;font-weight:700;}
+  .howto-card ol{margin:0;padding-left:1.2em;color:var(--ink-soft);font-size:.92rem;}
+  .howto-card li{margin:2px 0;}
+  .howto-card code{font-family:var(--mono);background:#eef3fa;border:1px solid var(--line);border-radius:6px;padding:1px 6px;font-size:.85em;color:var(--py-blue);}
+  .legend-blank{font-family:var(--mono);background:var(--blank-bg);color:var(--blank-ink);border-radius:6px;padding:1px 8px;font-weight:700;}
+
+  .toolbar{position:sticky;top:0;z-index:40;background:rgba(238,243,250,.88);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);margin-top:24px;padding:12px 22px;}
+  .toolbar-inner{max-width:1080px;margin:0 auto;display:flex;gap:14px 20px;flex-wrap:wrap;align-items:center;}
+  .filter-group{display:flex;gap:6px;flex-wrap:wrap;align-items:center;}
+  .filter-group .lbl{font-size:.78rem;color:var(--ink-soft);font-weight:600;margin-right:2px;}
+  .chip{font-family:var(--sans);font-size:.85rem;font-weight:600;border:1px solid var(--line);background:#fff;color:var(--ink-soft);padding:6px 12px;border-radius:999px;cursor:pointer;transition:.15s;}
+  .chip:hover{border-color:var(--py-blue);color:var(--py-blue);}
+  .chip[aria-pressed="true"]{background:var(--py-blue);border-color:var(--py-blue);color:#fff;}
+  .search{margin-left:auto;display:flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:6px 14px;}
+  .search input{border:0;outline:0;font-family:var(--sans);font-size:.9rem;background:transparent;width:160px;color:var(--ink);}
+  .search svg{flex:none;}
+
+  main{max-width:1080px;margin:0 auto;padding:8px 22px 80px;}
+  .level{margin-top:40px;scroll-margin-top:80px;}
+  .level-head{display:flex;align-items:center;gap:14px;margin-bottom:16px;}
+  .level-badge{flex:none;width:54px;height:54px;border-radius:14px;display:grid;place-items:center;color:#fff;font-family:var(--mono);font-weight:700;box-shadow:0 4px 14px rgba(22,32,44,.16);line-height:1;}
+  .level-badge .lv{font-size:.6rem;letter-spacing:.08em;opacity:.85;}
+  .level-badge .num{font-size:1.5rem;}
+  .level-titles h2{margin:0;font-size:1.3rem;font-weight:800;letter-spacing:-.01em;display:flex;align-items:center;gap:.35em;}
+  .level-titles p{margin:3px 0 0;color:var(--ink-soft);font-size:.92rem;max-width:70ch;}
+
+  .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:18px;}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;box-shadow:0 1px 2px rgba(22,32,44,.05);transition:.18s;}
+  .card:hover{box-shadow:0 8px 24px rgba(22,32,44,.10);transform:translateY(-2px);}
+  .card-top{padding:14px 16px 10px;border-bottom:1px solid var(--line);}
+  .card-tagrow{display:flex;align-items:center;gap:8px;margin-bottom:7px;}
+  .tag{font-family:var(--mono);font-size:.66rem;font-weight:700;letter-spacing:.04em;padding:3px 8px;border-radius:6px;text-transform:uppercase;}
+  .tag.turtle{background:#e7f6f4;color:#0d8377;}
+  .tag.data{background:#eaf1fb;color:#2461b5;}
+  .lvtag{margin-left:auto;font-family:var(--mono);font-size:.68rem;font-weight:700;color:#fff;padding:3px 9px;border-radius:999px;}
+  .card h3{margin:0;font-size:1.05rem;font-weight:700;}
+  .card .desc{margin:4px 0 0;font-size:.86rem;color:var(--ink-soft);}
+
+  .code-wrap{position:relative;background:var(--code-bg);}
+  pre.code{margin:0;padding:16px 16px 14px;overflow-x:auto;font-family:var(--mono);font-size:.83rem;line-height:1.7;color:var(--code-ink);tab-size:4;}
+  pre.code .cmt{color:var(--code-cmt);font-style:italic;}
+  pre.code .str{color:var(--code-str);}
+  .blank{display:inline-flex;align-items:center;gap:3px;vertical-align:baseline;background:var(--blank-bg);color:var(--blank-ink);border-radius:6px;padding:0 7px;margin:0 1px;font-weight:700;border:1px solid #e6bd1f;user-select:none;}
+  .blank .blank-num{font-size:.7em;opacity:.8;}
+
+  .card-foot{padding:12px 16px 14px;display:flex;flex-direction:column;gap:10px;}
+  .foot-btns{display:flex;gap:8px;}
+  .btn{font-family:var(--sans);font-size:.84rem;font-weight:700;cursor:pointer;border-radius:9px;padding:8px 12px;transition:.15s;border:1px solid transparent;display:inline-flex;align-items:center;gap:6px;}
+  .btn-copy{background:var(--py-blue);color:#fff;flex:1;justify-content:center;}
+  .btn-copy:hover{background:#27598a;}
+  .btn-copy.done{background:var(--ok);}
+  .hints{font-size:.82rem;color:var(--ink-soft);background:#f6f9fd;border:1px dashed var(--line);border-radius:10px;padding:10px 12px;}
+  .hints .h-title{font-weight:700;color:var(--ink);margin-bottom:3px;display:flex;align-items:center;gap:5px;}
+  .hints ul{margin:0;padding-left:0;list-style:none;}
+  .hints li{margin:3px 0;display:flex;gap:6px;}
+  .hints li .num{color:var(--py-blue);font-weight:700;font-family:var(--mono);flex:none;}
+
+  .empty{display:none;text-align:center;color:var(--ink-soft);padding:60px 20px;font-size:1rem;}
+  .empty.show{display:block;}
+
+  #toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;padding:11px 20px;border-radius:999px;font-size:.9rem;font-weight:600;opacity:0;pointer-events:none;transition:.25s;z-index:90;box-shadow:0 8px 24px rgba(0,0,0,.25);}
+  #toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+  footer.site{max-width:1080px;margin:0 auto;padding:0 22px 50px;color:var(--ink-soft);font-size:.82rem;text-align:center;}
+  footer.site .next{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:16px;margin-bottom:18px;}
+  footer.site .next b{color:var(--py-blue);}
+
+  @media (max-width:560px){.cards{grid-template-columns:1fr;}.search{margin-left:0;width:100%;}.search input{width:100%;}}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important;}.card:hover{transform:none;}}
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="head-inner">
+    <p class="eyebrow">Python Code Library · 6주차</p>
+    <h1><span>🐢</span> 파이썬 코드 도감</h1>
+    <p class="sub">거북이 그래픽부터 데이터 분석까지. 코드를 복사해서 직접 실행하고, <b style="color:#fff">빈칸을 채워</b> 완성해 보세요.</p>
+    <div class="meta">
+      <span><b>낙원중</b> 영재학급 정보</span>
+      <span>강사 <b>전경아</b></span>
+      <span>실습 환경 <b>Python · Colab</b></span>
+    </div>
+  </div>
+</header>
+
+<section class="howto">
+  <div class="howto-card">
+    <div class="big">✏️</div>
+    <div class="txt">
+      <h2>사용 방법</h2>
+      <ol>
+        <li>노란 빈칸 <span class="legend-blank">____</span> 에 들어갈 코드를 스스로 생각해 보세요.</li>
+        <li><code>코드 복사</code> 버튼으로 코드를 복사해 Colab에 붙여넣고, 빈칸을 직접 채워 실행해요.</li>
+        <li>막히면 카드 아래 <b>힌트 ①②</b> 를 보고 다시 도전! 정답이 맞는지는 <b>실행해서 결과로 확인</b>해요.</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<nav class="toolbar">
+  <div class="toolbar-inner">
+    <div class="filter-group" id="catFilter">
+      <span class="lbl">분류</span>
+      <button class="chip" data-cat="all" aria-pressed="true">전체</button>
+      <button class="chip" data-cat="turtle" aria-pressed="false">🐢 거북이 그래픽</button>
+      <button class="chip" data-cat="data" aria-pressed="false">📊 데이터 분석</button>
+    </div>
+    <div class="filter-group" id="lvFilter">
+      <span class="lbl">난이도</span>
+      <button class="chip" data-lv="all" aria-pressed="true">전체</button>
+      <button class="chip" data-lv="1" aria-pressed="false">Lv.1</button>
+      <button class="chip" data-lv="2" aria-pressed="false">Lv.2</button>
+      <button class="chip" data-lv="3" aria-pressed="false">Lv.3</button>
+      <button class="chip" data-lv="4" aria-pressed="false">Lv.4</button>
+      <button class="chip" data-lv="5" aria-pressed="false">Lv.5</button>
+      <button class="chip" data-lv="6" aria-pressed="false">Lv.6</button>
+    </div>
+    <div class="search">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#8a9bad" stroke-width="2.4" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
+      <input type="search" id="searchBox" placeholder="검색 (예: 막대그래프)" aria-label="코드 검색">
+    </div>
+  </div>
+</nav>
+
+<main id="main"></main>
+<p class="empty" id="emptyMsg">조건에 맞는 코드가 없어요. 필터나 검색어를 바꿔 보세요.</p>
+
+<footer class="site">
+  <div class="next">📅 <b>다음 주에는</b> — 파이썬 조건문 / 반복문, 터틀 메서드 실습</div>
+  <p>낙원중 영재학급 정보 · 파이썬 코드 도감 · 강사 전경아</p>
+</footer>
+
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script>
+/* ====== 난이도 정보 ====== */
+const LEVELS = {
+  1:{emoji:'🐢',name:'거북이 첫걸음',cat:'turtle',color:'var(--l1)',desc:'거북이로 도형을 그리고 색을 채워요. begin_fill() 과 end_fill() 사이의 도형이 색으로 채워져요.'},
+  2:{emoji:'🎲',name:'랜덤과 패턴',cat:'turtle',color:'var(--l2)',desc:'random 모듈로 무작위를 만들고, 반복문을 겹쳐서 멋진 패턴을 그려요.'},
+  3:{emoji:'🌀',name:'거북이 마스터',cat:'turtle',color:'var(--l3)',desc:'색과 두께를 바꿔가며 빙글빙글, 화려한 만다라를 완성해요.'},
+  4:{emoji:'📊',name:'데이터 다루기',cat:'data',color:'var(--l4)',desc:'표(데이터프레임)를 만들고 합과 평균을 구해 데이터를 분석해요. (Colab에서 실행)'},
+  5:{emoji:'📈',name:'그래프 그리기',cat:'data',color:'var(--l5)',desc:'matplotlib으로 선·막대 그래프를 그리고 제목과 범례를 붙여요.'},
+  6:{emoji:'🔍',name:'진짜 데이터 분석',cat:'data',color:'var(--l6)',desc:'엑셀 파일을 불러와 데이터를 파악하고, seaborn으로 멋지게 시각화해요.'},
+};
+
+/* ====== 코드 스니펫 (빈칸은 @@n@@ · 정답은 학생 페이지에 포함되지 않음) ====== */
+const SNIPPETS = [
+{level:1,cat:'turtle',title:'정사각형 색칠하기',desc:'네 변을 그리고 내부를 파란색으로 채워요.',
+ code:`import turtle as t
+
+t.color('blue')          # 색을 고르기
+t.begin_fill()           # 색 채우기 시작
+
+for _ in range(@@0@@):     # 정사각형은 변이 몇 개일까?
+    t.forward(100)       # 100만큼 앞으로
+    t.left(@@1@@)          # 왼쪽으로 회전
+t.end_fill()             # 색 채우기 끝
+t.done()`,
+ hints:['정사각형의 변은 모두 4개예요.','네 번 돌아 360°가 되려면 한 번에 몇 도? (360 ÷ 4)']},
+
+{level:1,cat:'turtle',title:'색이 바뀌는 나선',desc:'선이 점점 길어지면서 색이 번갈아 바뀌는 사각 나선이에요.',
+ code:`import turtle as t
+
+t.speed(0)                      # 가장 빠른 속도
+colors = ["red", "blue", "green", "yellow"]
+
+for i in range(100):
+    t.color(colors[i % @@0@@])    # 색을 번갈아 사용 (색이 4개)
+    t.fd(i)                     # i만큼 앞으로 (점점 길어짐)
+    t.rt(@@1@@)                   # 오른쪽으로 회전`,
+ hints:['색 리스트에 색이 4개 있어요. 나머지 연산 %로 0~3을 반복해요.','직각으로 꺾으려면 몇 도?']},
+
+{level:2,cat:'turtle',title:'random 모듈로 색 뽑기',desc:'리스트에서 무작위로 색을 골라 출력해요.',
+ code:`import random as r
+
+colors = ["red", "blue", "green", "yellow", "grey", "pink",
+          "orange", "purple", "indigo", "black", "skyblue", "brown"]
+
+print(colors[r.randint(0, @@0@@)])   # 0~11번 중 무작위 색
+print(r.@@1@@(colors))               # 리스트에서 하나를 콕 집기`,
+ hints:['색이 12개라서 번호(인덱스)는 0부터 11까지예요.','리스트에서 무작위로 하나 고르는 함수예요. r.____(colors)']},
+
+{level:2,cat:'turtle',title:'꽃모양 패턴',desc:'사각형을 조금씩 돌려가며 36개 겹쳐 그리면 꽃이 돼요.',
+ code:`import turtle as t
+
+t.color('blue')
+for i in range(@@0@@):       # 사각형을 여러 번 그려 한 바퀴!
+    for j in range(4):     # 사각형 한 개 그리기
+        t.forward(100)
+        t.right(90)
+    t.right(@@1@@)           # 사각형을 조금씩 회전 (360 ÷ 36)
+t.done()`,
+ hints:['360°를 10°씩 돌리면 모두 몇 번 돌게 될까요?','한 바퀴(360°)를 36번에 나눠 돌리면 한 번에 몇 도?']},
+
+{level:3,cat:'turtle',title:'만다라 패턴',desc:'색·두께·길이를 모두 바꿔가며 그리는 화려한 무늬예요.',
+ code:`import turtle as t
+
+t.speed(0)
+colors = ['red', 'purple', 'blue', 'green', 'yellow', 'orange']
+
+for x in range(360):
+    t.pencolor(colors[x % @@0@@])   # 색 6가지를 번갈아 사용
+    t.width(x // 100 + 1)         # 선이 점점 두꺼워짐
+    t.forward(x)                  # x만큼 앞으로 (점점 길어짐)
+    t.left(@@1@@)                   # 살짝 비스듬히 회전
+t.done()`,
+ hints:['색 리스트에 색이 6개 들어 있어요.','딱 60이 아니라 1 작은 값! 그래서 무늬가 조금씩 돌아가요.']},
+
+{level:4,cat:'data',title:'라이브러리 불러오기',desc:'데이터 분석에 필요한 도구들을 별명을 붙여 불러와요.',
+ code:`import numpy as np
+import pandas as @@0@@
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+plt.rcParams["axes.unicode_minus"] = False
+plt.rc("font", family="Malgun Gothic")   # 한글이 깨지지 않게`,
+ hints:['pandas는 보통 "pd"라는 짧은 별명으로 불러와요.']},
+
+{level:4,cat:'data',title:'데이터프레임 만들기',desc:'학생 4명의 점수를 표(데이터프레임)로 만들어요.',
+ code:`import pandas as pd
+
+Df = pd.@@0@@({'name': ['유재석', '박나래', '강호동', '이수근'],
+                  'literacy': [90, 80, 100, 90],
+                  'english': [50, 70, 30, 90],
+                  'math': [70, 70, 50, 90]})
+Df`,
+ hints:['표를 만드는 함수. 대문자 D와 F가 들어가요 → pd.____()']},
+
+{level:4,cat:'data',title:'합과 평균 구하기',desc:'특정 과목 점수를 뽑아 전체 합과 평균을 계산해요.',
+ code:`Df['english']               # 영어 점수만 뽑기
+
+sum(Df['english'])          # 영어 점수 전체 합
+
+sum(Df['english']) / @@0@@    # 영어 평균 (학생 수로 나누기)
+
+sum(Df[@@1@@]) / 4            # 수학 평균`,
+ hints:['평균 = 합 ÷ 사람 수. 학생은 모두 몇 명일까요?','수학 점수 열 이름을 따옴표까지 함께 적어요.']},
+
+{level:5,cat:'data',title:'numpy 배열 만들기',desc:'numpy로 1차원·2차원 배열과 연속된 숫자를 만들어요.',
+ code:`import numpy as np
+
+arr1 = np.array([1, 2, 3, 4, 5])          # 1차원 배열
+arr2 = np.@@0@@([[1, 2, 3], [4, 5, 6]])     # 2차원 배열
+arr3 = np.arange(@@1@@)                      # 0부터 9까지 자동 생성`,
+ hints:['리스트를 배열로 만드는 함수. arr1에 쓴 것과 똑같아요.','0,1,2,…,9 까지면 숫자가 몇 개일까요?']},
+
+{level:5,cat:'data',title:'기본 선 그래프',desc:'리스트 데이터로 가장 단순한 선 그래프를 그려요.',
+ code:`import matplotlib.pyplot as plt
+
+plt.plot([10, 20, 30, 40])   # 데이터로 선 그리기
+plt.@@0@@()                    # 그래프를 화면에 보여주기`,
+ hints:['그래프를 화면에 띄우는 명령이에요. plt.____()']},
+
+{level:5,cat:'data',title:'그래프 꾸미기 (제목·범례)',desc:'선 2개를 그리고 제목과 이름표(범례)를 붙여요.',
+ code:`import matplotlib.pyplot as plt
+
+plt.plot([10, 20, 30, 40], label="increase")   # 1번 선 + 이름표
+plt.plot([40, 30, 20, 10], label="decrease")   # 2번 선 + 이름표
+plt.title("Graph")                              # 그래프 제목
+plt.@@0@@()                                       # 이름표(범례) 보이기
+plt.show()`,
+ hints:['각 선의 label을 모아 보여주는 명령. plt.____()']},
+
+{level:5,cat:'data',title:'마커와 색 스타일',desc:"'^r' 같은 짧은 코드로 모양과 색을 한 번에 정해요.",
+ code:`import matplotlib.pyplot as plt
+
+plt.plot([10, 20, 30, 40], '@@0@@', label="increase")   # ^ = 삼각형, r = 빨강
+plt.plot([40, 30, 20, 10], 'go', label="decrease")     # g = 초록, o = 동그라미
+plt.legend(loc='lower left')                           # 범례: 왼쪽 아래
+plt.show()`,
+ hints:["빨간 삼각형 = 삼각형 기호(^) + 빨강(r). 따옴표 안에 두 글자예요."]},
+
+{level:5,cat:'data',title:'막대 그래프',desc:'과목별 점수를 막대 그래프로 비교해요.',
+ code:`import matplotlib.pyplot as plt
+
+subjects = ['국어', '영어', '수학', '과학', '사회']
+scores = [85, 92, 78, 90, 85]
+
+plt.@@0@@(subjects, scores, color='skyblue')   # 막대 그래프
+plt.show()`,
+ hints:['막대(bar) 그래프를 그리는 명령이에요. plt.____()']},
+
+{level:6,cat:'data',title:'엑셀 파일 불러오기',desc:'업로드한 엑셀 파일을 표로 읽어와요.',
+ code:`import pandas as pd
+
+Df_exam = pd.@@0@@('jeju_exam.xlsx')   # 엑셀 파일 읽기
+Df_exam                                  # 표 확인하기`,
+ hints:['엑셀(excel)을 읽는(read) 함수예요. pd.____()']},
+
+{level:6,cat:'data',title:'데이터 파악하기',desc:'불러온 데이터의 모양과 통계를 한눈에 살펴봐요.',
+ code:`Df_exam.@@0@@()       # 데이터 앞부분 보기
+Df_exam.tail()      # 데이터 뒷부분 보기
+Df_exam.shape       # (행, 열) 개수
+Df_exam.info()      # 각 열의 자료형 정보
+Df_exam.@@1@@()       # 평균·중앙값·최대값 등 요약`,
+ hints:['데이터의 앞부분(머리=head)을 보는 함수.','요약 통계량을 한 번에 보여주는 함수. (설명하다=describe)']},
+
+{level:6,cat:'data',title:'seaborn으로 시각화',desc:'막대·선·산점도를 seaborn으로 간편하게 그려요.',
+ code:`import seaborn as sns
+
+sns.@@0@@(data=Df_people, x='city', y='population')      # 막대 그래프
+sns.lineplot(data=Df_people, x='city', y='population')    # 선 그래프
+sns.@@1@@(data=Df_people, x='city', y='population')      # 산점도`,
+ hints:['막대(bar) 그래프를 그려요. sns.____','점을 흩뿌리는(scatter) 산점도예요. sns.____']},
+];
+
+/* ====== 렌더링 ====== */
+const CIRCLED = ['①','②','③','④','⑤'];
+const cardParts = {};
+
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function hlString(s){return s.replace(/('[^']*'|"[^"]*")/g,'<span class="str">$1</span>');}
+function hlLine(line){const e=esc(line);const hi=e.indexOf('#');if(hi>=0)return hlString(e.slice(0,hi))+'<span class="cmt">'+e.slice(hi)+'</span>';return hlString(e);}
+function hlText(t){return t.split('\n').map(hlLine).join('\n');}
+
+function buildParts(code){
+  const parts=[];const re=/@@(\d+)@@/g;let last=0,m;
+  while((m=re.exec(code))!==null){
+    if(m.index>last) parts.push({t:'text',v:code.slice(last,m.index)});
+    parts.push({t:'blank',i:parseInt(m[1],10)});
+    last=re.lastIndex;
+  }
+  if(last<code.length) parts.push({t:'text',v:code.slice(last)});
+  return parts;
+}
+function renderCodeHTML(parts){
+  let html='';
+  parts.forEach(p=>{
+    if(p.t==='text') html+=hlText(p.v);
+    else{const num=CIRCLED[p.i]||'•';
+      html+=`<span class="blank" aria-label="빈칸 ${p.i+1}"><span class="blank-num">${num}</span><span class="blank-text">____</span></span>`;}
+  });
+  return html;
+}
+
+function makeCard(s,idx){
+  const cid='c'+idx;
+  const parts=buildParts(s.code);
+  cardParts[cid]=parts;
+  const lv=LEVELS[s.level];
+  const hintsHTML = s.hints.length ? `
+    <div class="hints"><div class="h-title">💡 힌트</div>
+      <ul>${s.hints.map((h,i)=>`<li><span class="num">${CIRCLED[i]}</span><span>${esc(h)}</span></li>`).join('')}</ul></div>` : '';
+  const el=document.createElement('article');
+  el.className='card';el.dataset.level=s.level;el.dataset.cat=s.cat;
+  el.dataset.text=(s.title+' '+s.desc).toLowerCase();el.dataset.cid=cid;
+  el.innerHTML=`
+    <div class="card-top">
+      <div class="card-tagrow">
+        <span class="tag ${s.cat}">${s.cat==='turtle'?'TURTLE':'DATA'}</span>
+        <span class="lvtag" style="background:${lv.color}">Lv.${s.level}</span>
+      </div>
+      <h3>${esc(s.title)}</h3>
+      <p class="desc">${esc(s.desc)}</p>
+    </div>
+    <div class="code-wrap"><pre class="code"><code>${renderCodeHTML(parts)}</code></pre></div>
+    <div class="card-foot">
+      <div class="foot-btns"><button class="btn btn-copy" data-cid="${cid}">📋 코드 복사</button></div>
+      ${hintsHTML}
+    </div>`;
+  return el;
+}
+
+function buildPage(){
+  const main=document.getElementById('main');let idx=0;
+  Object.keys(LEVELS).forEach(lvKey=>{
+    const lv=LEVELS[lvKey];
+    const section=document.createElement('section');
+    section.className='level';section.id='lv'+lvKey;section.dataset.level=lvKey;
+    section.innerHTML=`
+      <div class="level-head">
+        <div class="level-badge" style="background:${lv.color}"><span class="lv">LEVEL</span><span class="num">${lvKey}</span></div>
+        <div class="level-titles"><h2>${lv.emoji} ${lv.name}</h2><p>${lv.desc}</p></div>
+      </div>
+      <div class="cards"></div>`;
+    const grid=section.querySelector('.cards');
+    SNIPPETS.filter(s=>String(s.level)===lvKey).forEach(s=>grid.appendChild(makeCard(s,idx++)));
+    main.appendChild(section);
+  });
+}
+
+function copyCard(cardEl){
+  const parts=cardParts[cardEl.dataset.cid];
+  let text='';
+  parts.forEach(p=>{text+= p.t==='text'?p.v:'____';});
+  navigator.clipboard.writeText(text.trim()).then(()=>{
+    showToast('코드를 복사했어요! 빈칸을 채워 실행해 보세요 ✏️');
+    const btn=cardEl.querySelector('.btn-copy');
+    btn.classList.add('done');btn.textContent='✅ 복사됨';
+    setTimeout(()=>{btn.classList.remove('done');btn.textContent='📋 코드 복사';},1400);
+  }).catch(()=>showToast('복사를 지원하지 않는 환경이에요.'));
+}
+
+let toastTimer;
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),1900);}
+
+document.addEventListener('click',e=>{
+  const copyBtn=e.target.closest('.btn-copy');
+  if(copyBtn) copyCard(copyBtn.closest('.card'));
+});
+
+const filters={cat:'all',lv:'all',q:''};
+function applyFilters(){
+  let any=false;
+  document.querySelectorAll('.card').forEach(c=>{
+    const ok=(filters.cat==='all'||c.dataset.cat===filters.cat)&&(filters.lv==='all'||c.dataset.level===filters.lv)&&(filters.q===''||c.dataset.text.includes(filters.q));
+    c.style.display=ok?'':'none';if(ok)any=true;
+  });
+  document.querySelectorAll('.level').forEach(sec=>{
+    sec.style.display=[...sec.querySelectorAll('.card')].some(c=>c.style.display!=='none')?'':'none';
+  });
+  document.getElementById('emptyMsg').classList.toggle('show',!any);
+}
+function wireChips(groupId,key){
+  const group=document.getElementById(groupId);
+  group.addEventListener('click',e=>{
+    const chip=e.target.closest('.chip');if(!chip)return;
+    group.querySelectorAll('.chip').forEach(c=>c.setAttribute('aria-pressed','false'));
+    chip.setAttribute('aria-pressed','true');
+    filters[key]=chip.dataset[key==='cat'?'cat':'lv'];applyFilters();
+  });
+}
+
+buildPage();
+wireChips('catFilter','cat');
+wireChips('lvFilter','lv');
+document.getElementById('searchBox').addEventListener('input',e=>{filters.q=e.target.value.trim().toLowerCase();applyFilters();});
+</script>
+</body>
+</html>
